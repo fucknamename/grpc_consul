@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+package proto;
+
+option go_package = "grpcdemo/proto/payment";
+
+import "google/protobuf/struct.proto";
+
+// 通用支付请求，raw_data 存放渠道特有字段
+message PayRequest {
+  string channel = 1;       // 渠道标识（例如 hellopay/wechatpay）
+  string order_id = 2;
+  double amount = 3;
+  string currency = 4;
+  google.protobuf.Struct raw_data = 5;
+}
+
+message PayReply {
+  bool success = 1;
+  string trans_id = 2;
+  string message = 3;
+}
+
+service Payment {
+  rpc Pay(PayRequest) returns (PayReply);
+}
